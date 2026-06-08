@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АРМ ТЭО // NIGHT CITY BUILD</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="scan-line"></div>
+
+    <div id="eulaModal" class="modal-overlay">
+    <div class="modal-card glass-panel">
+        <div class="neon-line top"></div>
+        <h2 class="neon-text">// EULA_AGREEMENT</h2>
+        <div class="eula-text custom-scroll">
+            <p><strong>// ПРОГРАММНЫЙ ПРОДУКТ:</strong> АС «ТЭО-Расчет» v2.0.7 — Автоматизированная система технико-экономического обоснования проектов.</p>
+            
+            <p class="warning-text">⚠ ВНИМАНИЕ: Использование данного программного обеспечения означает полное и безоговорочное принятие всех условий настоящего соглашения. Настоятельно рекомендуется ознакомиться с документом перед активацией системы.</p>
+
+            <h4>▸ 1. ПРЕДМЕТ ЛИЦЕНЗИОННОГО СОГЛАШЕНИЯ</h4>
+            <p>Разработчик предоставляет Конечному пользователю неисключительное, непередаваемое право использования программного комплекса «ТЭО-Расчет» исключительно в целях автоматизации расчетных процедур, проведения параметрического анализа и оценки экономической эффективности проектов в соответствии с методическими указаниями.</p>
+            <p>Лицензия распространяется на использование Программы на одном рабочем месте. Любое тиражирование, установка на несколько устройств или использование в сетевом режиме требует заключения отдельного соглашения.</p>
+
+            <h4>▸ 2. ПРАВА И ОГРАНИЧЕНИЯ ПОЛЬЗОВАТЕЛЯ</h4>
+            <p>Пользователь имеет право:</p>
+            <p>• Осуществлять запуск Программы и использовать все пять расчетных модулей (КТС, план-график, затраты на разработку, эксплуатационные затраты, показатели эффективности);</p>
+            <p>• Сохранять и экспортировать результаты расчетов для личного использования;</p>
+            <p>• Передавать выходные данные третьим лицам в рамках документооборота.</p>
+            
+            <p class="restricted-text">Пользователю ЗАПРЕЩАЕТСЯ:</p>
+            <p>• Осуществлять декомпиляцию, дизассемблирование или обратную разработку исходного кода;</p>
+            <p>• Модифицировать алгоритмы расчетного ядра и интерфейсные компоненты;</p>
+            <p>• Удалять, изменять или скрывать информацию об авторских правах и знаки копирайта;</p>
+            <p>• Распространять, сдавать в аренду или передавать Программу третьим лицам без письменного разрешения Разработчика.</p>
+
+            <h4>▸ 3. ОГРАНИЧЕНИЕ ОТВЕТСТВЕННОСТИ</h4>
+            <p>Программный продукт предоставляется по принципу «AS IS» (как есть). Разработчик не предоставляет гарантий того, что функциональные возможности Программы будут полностью соответствовать специфическим требованиям Пользователя, выходящим за рамки методических указаний.</p>
+            <p>Разработчик не несет ответственности за:</p>
+            <p>• Прямые или косвенные убытки, возникшие в результате использования или невозможности использования Программы;</p>
+            <p>• Упущенную выгоду, потерю данных или иные финансовые потери;</p>
+            <p>• Некорректную интерпретацию выходных данных Пользователем;</p>
+            <p>• Ошибки, возникшие вследствие ввода некорректных исходных параметров.</p>
+            <p>Все расчеты производятся строго в соответствии с методическими указаниями ТУСУР и носят рекомендательный характер.</p>
+
+            <h4>▸ 4. ИНТЕЛЛЕКТУАЛЬНАЯ СОБСТВЕННОСТЬ</h4>
+            <p>Все исключительные права на Программный продукт, включая, но не ограничиваясь: программный код, алгоритмы расчетных моделей, дизайн интерфейса, графические элементы, структуру базы данных и сопроводительную документацию — принадлежат авторам-разработчикам и защищены законодательством Российской Федерации об авторском праве.</p>
+            <p>Никакие положения настоящего Соглашения не могут рассматриваться как передача исключительных прав на Программу Пользователю.</p>
+
+            <h4>▸ 5. ПРОЧИЕ УСЛОВИЯ</h4>
+            <p>Настоящее Соглашение действует в течение всего срока использования Программы. В случае нарушения любого из условий Соглашения, лицензия автоматически аннулируется без уведомления Пользователя. Разработчик оставляет за собой право вносить изменения в настоящее Соглашение с уведомлением Пользователя через обновление Программы.</p>
+        </div>
+        <div class="eula-actions">
+            <label class="checkbox-container">
+                <input type="checkbox" id="acceptCheckbox">
+                <span class="checkmark"></span>
+                <span>Я принимаю условия лицензионного соглашения.</span>
+            </label>
+            <div class="modal-buttons">
+                <button class="btn btn-reject" onclick="rejectEula()">> Отклонить</button>
+                <button class="btn btn-accept" id="proceedBtn" onclick="acceptEula()" disabled>> Войти в систему</button>
+            </div>
+        </div>
+        <div class="neon-line bottom"></div>
+    </div>
+</div>
+<!-- Боковая панель навигации -->
+<nav id="sideNav" class="side-nav glass-panel">
+    <div class="nav-header">
+        <span class="nav-logo neon-text">/// NAV</span>
+        <button class="nav-toggle" onclick="toggleNav()">◄</button>
+    </div>
+    <ul class="nav-list">
+        <li><a href="#block1" onclick="scrollToBlock('block1')"><span class="nav-num">01</span> Расчет КТС</a></li>
+        <li><a href="#block2" onclick="scrollToBlock('block2')"><span class="nav-num">02</span> План-график</a></li>
+        <li><a href="#block3" onclick="scrollToBlock('block3')"><span class="nav-num">03</span> Затраты на разработку</a></li>
+        <li><a href="#block4" onclick="scrollToBlock('block4')"><span class="nav-num">04</span> Эксплуатационные затраты</a></li>
+        <li><a href="#block5" onclick="scrollToBlock('block5')"><span class="nav-num">05</span> Итоговые показатели</a></li>
+        <li><a href="#block_formulas" onclick="scrollToBlock('block_formulas')"><span class="nav-num">06</span> Модели и формулы</a></li>
+        <li><a href="#block6" onclick="scrollToBlock('block6')"><span class="nav-num">07</span> Об авторе</a></li>
+    </ul>
+    <div class="nav-footer">
+    <span class="nav-status">● ONLINE</span>
+    <button class="license-return-btn" onclick="returnToLicense()">
+        <span>📋</span> Лицензия
+    </button>
+</div>
+</nav>
+
+<!-- Кнопка открытия навигации (когда панель скрыта) -->
+<button id="navOpenBtn" class="nav-open-btn" onclick="toggleNav()" style="display:none;">►</button>
+    <div id="appContent" class="app-hidden">
+        <header class="glass-panel">
+            <div class="header-content">
+                <h1 class="neon-text glitch" data-text="АВТОМАТИЗАЦИЯ РАСЧЕТА ТЭО ПРОЕКТА">АВТОМАТИЗАЦИЯ РАСЧЕТА ТЭО ПРОЕКТА</h1>
+                <p class="subtitle">Программный комплекс оценки экономической эффективности разработки АИС</p>
+            </div>
+            <div class="neon-line bottom"></div>
+        </header>
+
+        <div id="block1" class="tab-content active glass-panel">
+            <h2 class="neon-text">/// БЛОК 1: РАСЧЕТ КОЭФФИЦИЕНТА ТЕХНИЧЕСКОГО СОВЕРШЕНСТВА</h2>
+            <button class="btn btn-add" onclick="addKtsRow()">[+] Добавить показатель</button>
+            <div class="table-wrapper custom-scroll">
+                <table id="ktsTable">
+                    <thead>
+                        <tr>
+                            <th>Показатель качества</th>
+                            <th>Весомость (B<sub>j</sub>)</th>
+                            <th>Проект (X<sub>j1</sub>)</th>
+                            <th>Аналог (X<sub>j2</sub>)</th>
+                            <th>Удалить</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><input type="text" value="Удобство работы (интерфейс)" class="table-input"></td><td><input type="number" step="0.01" class="weight" value="0.14" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="p-score" value="4" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="a-score" value="2" onchange="calculateAll()"></td><td><button class="btn btn-delete" onclick="deleteRow(this)">X</button></td></tr>
+                        <tr><td><input type="text" value="Новизна и соответствие требованиям" class="table-input"></td><td><input type="number" step="0.01" class="weight" value="0.10" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="p-score" value="4" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="a-score" value="3" onchange="calculateAll()"></td><td><button class="btn btn-delete" onclick="deleteRow(this)">X</button></td></tr>
+                        <tr><td><input type="text" value="Соответствие профилю заказчика" class="table-input"></td><td><input type="number" step="0.01" class="weight" value="0.20" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="p-score" value="4" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="a-score" value="2" onchange="calculateAll()"></td><td><button class="btn btn-delete" onclick="deleteRow(this)">X</button></td></tr>
+                        <tr><td><input type="text" value="Ресурсная эффективность" class="table-input"></td><td><input type="number" step="0.01" class="weight" value="0.05" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="p-score" value="4" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="a-score" value="4" onchange="calculateAll()"></td><td><button class="btn btn-delete" onclick="deleteRow(this)">X</button></td></tr>
+                        <tr><td><input type="text" value="Надежность и защита данных" class="table-input"></td><td><input type="number" step="0.01" class="weight" value="0.13" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="p-score" value="3" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="a-score" value="3" onchange="calculateAll()"></td><td><button class="btn btn-delete" onclick="deleteRow(this)">X</button></td></tr>
+                        <tr><td><input type="text" value="Скорость доступа к информации" class="table-input"></td><td><input type="number" step="0.01" class="weight" value="0.10" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="p-score" value="4" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="a-score" value="4" onchange="calculateAll()"></td><td><button class="btn btn-delete" onclick="deleteRow(this)">X</button></td></tr>
+                        <tr><td><input type="text" value="Гибкость настройки системы" class="table-input"></td><td><input type="number" step="0.01" class="weight" value="0.06" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="p-score" value="3" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="a-score" value="3" onchange="calculateAll()"></td><td><button class="btn btn-delete" onclick="deleteRow(this)">X</button></td></tr>
+                        <tr><td><input type="text" value="Обучаемость персонала" class="table-input"></td><td><input type="number" step="0.01" class="weight" value="0.13" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="p-score" value="5" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="a-score" value="1" onchange="calculateAll()"></td><td><button class="btn btn-delete" onclick="deleteRow(this)">X</button></td></tr>
+                        <tr><td><input type="text" value="Соотношение стоимость/возможности" class="table-input"></td><td><input type="number" step="0.01" class="weight" value="0.09" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="p-score" value="4" onchange="calculateAll()"></td><td><input type="number" min="1" max="5" class="a-score" value="2" onchange="calculateAll()"></td><td><button class="btn btn-delete" onclick="deleteRow(this)">X</button></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="result-box">
+                <p>Индекс ЭТУ проекта (J<sub>эту1</sub>): <span id="j_etu1" class="bold-val">0.00</span></p>
+                <p>Индекс ЭТУ аналога (J<sub>эту2</sub>): <span id="j_etu2" class="bold-val">0.00</span></p>
+                <p>Коэффициент технического совершенства (A<sub>k</sub>): <span id="ak_val" class="bold-val">0.00</span></p>
+            </div>
+        </div>
+
+        <div id="block2" class="tab-content glass-panel">
+    <h2 class="neon-text">/// БЛОК 2: КАЛЕНДАРНЫЙ ПЛАН-ГРАФИК РАБОТ</h2>
+    <div class="grid-2">
+        <div class="form-group">
+            <label>Дата начала комплекса работ:</label>
+            <input type="date" id="startDate" value="2013-01-21" onchange="calculateAll()">
+        </div>
+    </div>
+    <div class="table-wrapper custom-scroll">
+        <table id="scheduleTable">
+            <thead>
+                <tr>
+                    <th>Содержание работы</th>
+                    <th>Исполнитель</th>
+                    <th>Длительность (дней)</th>
+                    <th>Начало работы</th>
+                    <th>Конец работы</th>
+                </tr>
+            </thead>
+            <tbody id="scheduleBody">
+                <!-- Заполняется автоматически -->
+            </tbody>
+        </table>
+    </div>
+    <div class="result-box">
+        <p>Суммарная трудоемкость Руководителя: <span id="total_dur_lead" class="bold-val">0</span> дней</p>
+        <p>Суммарная трудоемкость Программиста: <span id="total_dur_prog" class="bold-val">0</span> дней</p>
+    </div>
+</div>
+
+        <div id="block3" class="tab-content glass-panel">
+    <h2 class="neon-text">/// БЛОК 3: СМЕТА ЗАТРАТ НА РАЗРАБОТКУ И ВНЕДРЕНИЕ</h2>
+    
+    <div class="grid-2 input-card glass-card">
+        <div class="form-group"><label>Месячный оклад Руководителя (руб.):</label><input type="number" id="salary_lead" value="19000" onchange="calculateAll()"></div>
+        <div class="form-group"><label>Месячный оклад Программиста (руб.):</label><input type="number" id="salary_prog" value="7000" onchange="calculateAll()"></div>
+        <div class="form-group"><label>Количество рабочих дней в месяце (F<sub>м</sub>):</label><input type="number" step="0.1" id="days_in_month" value="21" onchange="calculateAll()"></div>
+        <div class="form-group"><label>Коэф. дополнительной зарплаты (W<sub>d</sub>):</label><input type="number" step="0.01" id="wd_coeff" value="0.4" onchange="calculateAll()"></div>
+        <div class="form-group"><label>Коэф. отчислений на соц. нужды (W<sub>c</sub>):</label><input type="number" step="0.001" id="wc_coeff" value="0.302" onchange="calculateAll()"></div>
+        <div class="form-group"><label>Накладные расходы организации (W<sub>н</sub>):</label><input type="number" step="0.01" id="wn_coeff" value="0.6" onchange="calculateAll()"></div>
+        <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 8px; padding: 15px; grid-column: 1 / -1;">
+    <h4 style="color: var(--neon-cyan); margin-bottom: 15px; text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);">/// Расчёт затрат на машинное время</h4>
+    <p style="font-size: 12px; color: #a0a0c0; margin-bottom: 15px;">Формула: M<sub>в</sub> = t<sub>мв</sub> · S<sub>мч</sub> · K<sub>м</sub></p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+        <div class="form-group" style="margin-bottom: 0;">
+            <label>Часов работы ПК в день:</label>
+            <input type="number" step="0.5" id="pc_hours_per_day" value="4" onchange="calculateAll()">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label>Стоимость часа машинного времени (S<sub>мч</sub>), руб.:</label>
+            <input type="number" step="0.01" id="hour_cost" value="20" onchange="calculateAll()">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label>Коэф. мультипрограммности (K<sub>м</sub>):</label>
+            <input type="number" step="0.1" id="km_coeff" value="1" onchange="calculateAll()">
+        </div>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+        <div class="form-group" style="margin-bottom: 0;">
+            <label>Общее машинное время (t<sub>мв</sub>), часов:</label>
+            <input type="number" id="total_machine_hours" value="460" readonly style="font-weight: bold;">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label>ИТОГО затраты на машинное время (M<sub>в</sub>), руб.:</label>
+            <input type="number" id="comp_time_cost" value="9200" readonly style="font-weight: bold; color: #fff; text-shadow: 0 0 10px var(--neon-cyan); font-size: 16px;">
+        </div>
+    </div>
+</div>
+        <div class="form-group"><label>Балансовая стоимость ЭВМ / ПК (руб.):</label><input type="number" id="pc_cost" value="22500" onchange="calculateAll()"></div>
+        
+        <div class="form-group"><label>Трудоемкость тест. задачи (t<sub>кj</sub>), час:</label><input type="number" id="test_task_hours" value="6" onchange="calculateAll()"></div>
+        <div class="form-group"><label>Частота решения задач (U<sub>к</sub>), дней/год:</label><input type="number" id="test_task_freq" value="247" onchange="calculateAll()"></div>
+        
+        <div class="form-group"><label>Рабочих дней в году для Ф<sub>эфj</sub> (Д<sub>раб</sub>):</label><input type="number" id="fond_eff_days" value="247" onchange="calculateAll()"></div>
+        <div class="form-group"><label>Продолжительность дня для Ф<sub>эфj</sub> (t<sub>см</sub>), час:</label><input type="number" id="fond_eff_hours" value="8" onchange="calculateAll()"></div>
+        <div class="form-group">
+            <label>Эффективный фонд ПК (Ф<sub>эфj</sub>), час (подсчет):</label>
+            <input type="number" id="fond_eff_k" value="1976" readonly>
+        </div>
+    </div>
+
+    <div class="grid-2" style="margin-top: 20px;">
+    <div class="glass-card">
+        <h3>Капитальные затраты аналога (K<sub>1</sub>)</h3>
+        <div class="form-group"><label>Стоимость лицензии аналога (руб.):</label><input type="number" id="analog_license" value="37300" onchange="calculateAll()"></div>
+        <div class="form-group"><label>Затраты на установку и настройку (руб.):</label><input type="number" id="analog_setup" value="12000" onchange="calculateAll()"></div>
+        <div class="form-group"><label>Затраты на обучение пользователей (руб.):</label><input type="number" id="analog_training" value="9000" onchange="calculateAll()"></div>
+        <div class="form-group"><label>Стоимость ПК для работы аналога (руб.):</label><input type="number" id="pc_cost_a" value="22500" onchange="calculateAll()"></div>
+        <p class="tech-text">Итого К<sub>1</sub> = <span id="total_k1" class="bold-val">0.00</span> руб.</p>
+    </div>
+    <div class="glass-card">
+        <h3>/// Затраты на материалы</h3>
+        <button class="btn btn-add" onclick="addMaterialRow()" style="margin-bottom: 10px;">[+] Добавить материал</button>
+        <div class="table-wrapper custom-scroll">
+            <table id="materialsTable">
+                <thead>
+                    <tr>
+                        <th>Материалы (наименование)</th>
+                        <th>Единица измерения</th>
+                        <th>Требуемое количество</th>
+                        <th>Цена за единицу, руб.</th>
+                        <th>Сумма, руб.</th>
+                        <th>Удалить</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" value="Компакт-диск CD-RW" class="table-input" onchange="calculateAll()"></td>
+                        <td><input type="text" value="шт." class="table-input" onchange="calculateAll()"></td>
+                        <td><input type="number" step="1" class="mat-qty" value="2" onchange="calculateAll()"></td>
+                        <td><input type="number" step="0.01" class="mat-price" value="35" onchange="calculateAll()"></td>
+                        <td class="mat-sum">70.00</td>
+                        <td><button class="btn btn-delete" onclick="deleteMaterialRow(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="Тонер для лазерного принтера" class="table-input" onchange="calculateAll()"></td>
+                        <td><input type="text" value="шт." class="table-input" onchange="calculateAll()"></td>
+                        <td><input type="number" step="1" class="mat-qty" value="1" onchange="calculateAll()"></td>
+                        <td><input type="number" step="0.01" class="mat-price" value="1000" onchange="calculateAll()"></td>
+                        <td class="mat-sum">1000.00</td>
+                        <td><button class="btn btn-delete" onclick="deleteMaterialRow(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="Бумага офисная" class="table-input" onchange="calculateAll()"></td>
+                        <td><input type="text" value="пачка" class="table-input" onchange="calculateAll()"></td>
+                        <td><input type="number" step="1" class="mat-qty" value="1" onchange="calculateAll()"></td>
+                        <td><input type="number" step="0.01" class="mat-price" value="130" onchange="calculateAll()"></td>
+                        <td class="mat-sum">130.00</td>
+                        <td><button class="btn btn-delete" onclick="deleteMaterialRow(this)">X</button></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="4" style="text-align: right; font-weight: bold;">ИТОГО:</td>
+                        <td id="mat_total" class="bold-val">1200.00</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="grid-2" style="margin-top: 20px;">
+    <div></div>
+    <div class="glass-card">
+        <h3>Смета затрат на создание ИС (K<sub>п</sub>)</h3>
+        <table class="summary-table">
+            <tr><td>Основная зарплата разработчиков (ОЗП):</td><td id="sm_ozp">0.00</td></tr>
+            <tr><td>Дополнительная зарплата (ДЗП):</td><td id="sm_dzp">0.00</td></tr>
+            <tr><td>Отчисления на социальные нужды:</td><td id="sm_soc">0.00</td></tr>
+            <tr><td>Затраты на материалы:</td><td id="sm_mat">0.00</td></tr>
+            <tr><td>Затраты на машинное время:</td><td id="sm_comp">0.00</td></tr>
+            <tr><td>Накладные расходы организации:</td><td id="sm_nakl">0.00</td></tr>
+            <tr class="total-row"><td>Итого затраты на проектирование (K<sub>п</sub>):</td><td id="sm_total_kp">0.00</td></tr>
+            <tr><td>Затраты на опытное внедрение (K<sub>внедр</sub>):</td><td id="sm_vnedr">0.00</td></tr>
+            <tr class="total-row" style="background-color: rgba(139, 92, 246, 0.2);"><td>Итого капитальные проекта (K<sub>2</sub>):</td><td id="sm_total_k2" class="bold-val">0.00</td></tr>
+        </table>
+    </div>
+</div>
+
+        <div id="block4" class="tab-content glass-panel">
+            <h2 class="neon-text">/// БЛОК 4: ГОДОВЫЕ ЭКСПЛУАТАЦИОННЫЕ ЗАТРАТЫ</h2>
+            <div class="grid-2 input-card glass-card">
+                <div>
+                    <h4>Временные параметры процессов (дней/год)</h4>
+                    <div class="form-group"><label>Дни работы оператора (ПРОЕКТ):</label><input type="number" id="days_p_exp" value="40" onchange="calculateAll()"></div>
+                    <div class="form-group"><label>Дни сопровождения программистом (ПРОЕКТ):</label><input type="number" id="days_p_prog" value="20" onchange="calculateAll()"></div>
+                    <div class="form-group"><label>Дни работы оператора (АНАЛОГ):</label><input type="number" id="days_a_exp" value="60" onchange="calculateAll()"></div>
+                    <div class="form-group"><label>Дни сопровождения программистом (АНАЛОГ):</label><input type="number" id="days_a_prog" value="40" onchange="calculateAll()"></div>
+                </div>
+                <div>
+                    <h4>Коэффициенты, оклады и тарифы</h4>
+                    <div class="form-group"><label>Балансовая стоимость ПК (ПРОЕКТ):</label><input type="number" id="pc_cost_exp_p" value="22500" onchange="calculateAll()"></div>
+                    <div class="form-group"><label>Балансовая стоимость ПК (АНАЛОГ):</label><input type="number" id="pc_cost_exp_a" value="22500" onchange="calculateAll()"></div>
+                    
+                    <div class="form-group"><label>Оклад оператора (руб./мес):</label><input type="number" id="oklad_op" value="15000" onchange="calculateAll()"></div>
+                    <div class="form-group"><label>Оклад системного программиста (руб./мес):</label><input type="number" id="oklad_soft" value="10000" onchange="calculateAll()"></div>
+                    
+                    <div class="form-group"><label>Коэф. дополнительной з/п (К<sub>д</sub>), %:</label><input type="number" id="wd_exp" step="0.1" value="10.0" onchange="calculateAll()"></div>
+                    <div class="form-group"><label>Районный коэффициент (К<sub>район</sub>):</label><input type="number" id="w_rayon_exp" step="0.1" value="1.3" onchange="calculateAll()"></div>
+                    <div class="form-group"><label>Коэф. соц. нужд (К<sub>с</sub>), %:</label><input type="number" id="wc_exp" step="0.1" value="30.2" onchange="calculateAll()"></div>
+                    
+                    <div class="form-group"><label>Стоимость электроэнергии (руб./кВт ч):</label><input type="number" step="0.01" id="tariff" value="2.6" onchange="calculateAll()"></div>
+                    <div class="form-group"><label>Норма амортизации (Н<sub>а</sub>), %:</label><input type="number" step="0.1" id="norm_am" value="20.0" onchange="calculateAll()"></div>
+                    <div class="form-group"><label>Мощность ЭВМ (кВт):</label><input type="number" step="0.01" id="pc_power" value="0.40" onchange="calculateAll()"></div>
+                    <div class="form-group"><label>Эффективный фонд времени (час):</label><input type="number" id="f_eff" value="1976" onchange="calculateAll()"></div>
+                    
+                    <div class="form-group"><label>Норматив на ремонт (C<sub>pi</sub>), %:</label><input type="number" step="0.1" id="k_rem_coeff" value="5.0" onchange="calculateAll()"></div>
+                    <div class="form-group"><label>Расход материалов от стоимости ПК, %:</label><input type="number" step="0.1" id="mat_percent" value="1.0" onchange="calculateAll()"></div>
+                    <div class="form-group"><label>Норматив накладных расходов, %:</label><input type="number" step="0.1" id="coef_other" value="20.0" onchange="calculateAll()"></div>
+                </div>
+            </div>
+
+            <h3>Сводная таблица затрат на эксплуатацию</h3>
+            <div class="table-wrapper custom-scroll">
+                <table>
+                    <thead>
+                        <tr><th>Статья расходов</th><th>Аналог (С<sub>1</sub>) руб</th><th>Проект (С<sub>2</sub>) руб</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>З/п с начислениями</td><td id="exp_zp_a">0.00</td><td id="exp_zp_p">0.00</td></tr>
+                        <tr><td>Амортизация</td><td id="exp_am_a">0.00</td><td id="exp_am_p">0.00</td></tr>
+                        <tr><td>Электроэнергия</td><td id="exp_el_a">0.00</td><td id="exp_el_p">0.00</td></tr>
+                        <tr><td>Ремонт и ТО</td><td id="exp_rem_a">0.00</td><td id="exp_rem_p">0.00</td></tr>
+                        <tr><td>Прочие расходы (накладные + материалы)</td><td id="exp_other_a">0.00</td><td id="exp_other_p">0.00</td></tr>
+                        <tr class="total-row"><td>ИТОГО (С):</td><td id="exp_total_a">0.00</td><td id="exp_total_p">0.00</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="block5" class="tab-content glass-panel">
+            <h2 class="neon-text">/// БЛОК 5: РЕЗУЛЬТАТЫ ЭКОНОМИЧЕСКОГО ОБОСНОВАНИЯ ПРОЕКТА</h2>
+
+            <div class="grid-2 input-card glass-card" style="margin-bottom: 20px;">
+                <div class="form-group">
+                    <label>Нормативный коэффициент эффективности (E<sub>н</sub>):</label>
+                    <input type="number" step="0.01" id="en_coeff" value="0.33" onchange="calculateAll()">
+                </div>
+                <div class="form-group">
+                    <label>Объем годовой работы (N):</label>
+                    <input type="number" id="volume_n" value="1" onchange="calculateAll()">
+                </div>
+            </div>
+
+            <table class="summary-table final-table">
+                <thead>
+                    <tr>
+                        <th>Характеристика проекта (Технико-экономический показатель)</th>
+                        <th>Значение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Затраты на разработку и внедрение проекта (K<sub>2</sub>), руб.</td><td id="res_k2" class="bold-val">0.00</td></tr>
+                    <tr><td>Общие эксплуатационные затраты (C<sub>2</sub>), руб.</td><td id="res_c2" class="bold-val">0.00</td></tr>
+                    <tr class="highlight-row"><td>Годовой экономический эффект (Э), руб.</td><td id="res_effect" class="bold-val">0.00</td></tr>
+                    <tr><td>Коэффициент экономической эффективности (E<sub>ф</sub>)</td><td id="res_ef" class="bold-val">0.00</td></tr>
+                    <tr><td>Срок окупаемости проекта (T<sub>ок</sub>), лет</td><td id="res_tok" class="bold-val">0.00</td></tr>
+                </tbody>
+            </table>
+
+            <div id="verdictBox" class="verdict"></div>
+        </div>
+
+        <div id="block_formulas" class="tab-content glass-panel">
+            <h2 class="neon-text">/// БЛОК 6: МАТЕМАТИЧЕСКОЕ ОПИСАНИЕ МОДЕЛЕЙ И ФОРМУЛ ТЭО</h2>
+            <p class="section-desc">Расчетное ядро системы осуществляет вычисления на основе сквозных математических моделей технико-экономического обоснования ТУСУР:</p>
+
+            <div class="formula-card">
+                <h3>1. Оценка конкурентоспособности и КТС</h3>
+                <p>Коэффициент технического совершенства (A<sub>k</sub>) вычисляется как отношение многопараметрических индексов эксплуатационно-технического уровня:</p>
+                <div class="math-block">J<sub>эту</sub> = &sum; (B<sub>j</sub> &times; X<sub>j</sub>) &nbsp;&nbsp;|&nbsp;&nbsp; A<sub>k</sub> = J<sub>эту1</sub> / J<sub>эту2</sub></div>
+                <p>Где <b>B<sub>j</sub></b> — весомость j-го параметра, а <b>X<sub>j</sub></b> — экспертная оценка в баллах.</p>
+            </div>
+
+            <div class="formula-card">
+                <h3>2. Модель капитальных затрат на разработку (K<sub>2</sub>)</h3>
+                <p>Полная величина предпроизводственных вложений рассчитывается по формуле:</p>
+                <div class="math-block">K<sub>2</sub> = K<sub>п</sub> + K<sub>внедр</sub></div>
+                
+                <p>Затраты на опытное внедрение (K<sub>внедр</sub>) учитывают эффективный годовой фонд времени работы ЭВМ:</p>
+                <div class="math-block">Ф<sub>эфj</sub> = Д<sub>раб</sub> &times; t<sub>см</sub></div>
+                <p>Где <b>Д<sub>раб</sub></b> — количество рабочих дней в году, <b>t<sub>см</sub></b> — продолжительность рабочей смены в часах.</p>
+                
+                <p>Смета проектирования (K<sub>п</sub>) включает:</p>
+                <ul>
+                    <li>Основная зарплата: <span class="math-inline">ОЗП = &sum; (Оклад<sub>и</sub> / F<sub>м</sub>) &times; t<sub>и</sub></span></li>
+                    <li>Дополнительная зарплата: <span class="math-inline">ДЗП = ОЗП &times; W<sub>d</sub></span></li>
+                    <li>Социальные отчисления: <span class="math-inline">СОЦ = (ОЗП + ДЗП) &times; W<sub>c</sub></span></li>
+                    <li>Накладные расходы организации: <span class="math-inline">НР = ОЗП &times; W<sub>н</sub></span></li>
+                </ul>
+            </div>
+
+            <div class="formula-card">
+                <h3>3. Модель годовых эксплуатационных издержек (C)</h3>
+                <p>Текущие годовые затраты формируются из пяти независимых статей:</p>
+                <div class="math-block">C = Ц<sub>зп</sub> + Ц<sub>ам</sub> + Ц<sub>эл</sub> + Ц<sub>рем</sub> + Ц<sub>мн</sub></div>
+                <ul>
+                    <li><b>Ц<sub>зп</sub></b> — оплата труда персонала с начислениями: <span class="math-inline">((Дни &times; Оклад) / F<sub>м</sub>) &times; (1 + W<sub>d</sub>) &times; (1 + W<sub>c</sub>)</span>.</li>
+                    <li><b>Ц<sub>ам</sub></b> — амортизация компьютерной техники: <span class="math-inline">(БС &times; Н<sub>а</sub> &times; Дни &times; 8) / Ф<sub>эфф</sub></span>.</li>
+                    <li><b>Ц<sub>эл</sub></b> — расходы на электроэнергию: <span class="math-inline">Мощность &times; Дни &times; 8 &times; Тариф</span>.</li>
+                    <li><b>Ц<sub>рем</sub></b> — отчисления на ремонт и ТО: <span class="math-inline">(0.05 &times; БС &times; Дни &times; 8) / Ф<sub>эфф</sub></span>.</li>
+                    <li><b>Ц<sub>мн</sub></b> — материалы и накладные расходы эксплуатации: <span class="math-inline">(Ц<sub>зп</sub> + Ц<sub>ам</sub> + Ц<sub>эл</sub> + Ц<sub>рем</sub>) &times; К<sub>мн</sub> + Материалы</span>.</li>
+                </ul>
+            </div>
+
+            <div class="formula-card">
+                <h3>4. Модель интегральной экономической эффективности</h3>
+                <p>Расчет годового экономического эффекта (Э) базируется на уравнениях приведенных затрат аналога (З<sub>1</sub>) и проекта (З<sub>2</sub>):</p>
+                <div class="math-block">З = C + E<sub>н</sub> &times; K &nbsp;&nbsp;|&nbsp;&nbsp; Э = (З<sub>1</sub> &times; A<sub>k</sub> - З<sub>2</sub>) &times; N</div>
+                <p>Расчетный коэффициент эффективности (E<sub>ф</sub>) и срок окупаемости инвестиций (T<sub>ок</sub>):</p>
+                <div class="math-block">T<sub>ок</sub> = K<sub>2</sub> / Э &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; E<sub>ф</sub> = 1 / T<sub>ок</sub></div>
+            </div>
+        </div>
+
+        <div id="block6" class="tab-content glass-panel">
+            <h2 class="neon-text">/// БЛОК 7: ИНФОРМАЦИЯ О РАЗРАБОТЧИКЕ</h2>
+            <div class="author-card glass-card">
+                <h3>Чернов Виталий Александрович</h3>
+                <p>Студент группы <strong>443-1</strong></p>
+                <p>Университет: <strong>ТУСУР</strong>, Факультет Систем Управления (ФСУ)</p>
+                <p>Специальность: 09.03.03 Прикладная информатика в экономике</p>
+                <hr class="neon-divider">
+                <p style="font-size: 12px; color: #a78bfa;">&copy; 2026 Чернов В. А. Все права защищены.</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>Расчет ТЭО автоматизирован строго по методическим указаниям ТУСУР. <span class="neon-pulse">// SYSTEM ONLINE</span></p>
+        </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
